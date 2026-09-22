@@ -1,0 +1,347 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-metal: var(--metal);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 10px);
+}
+
+:root {
+  --radius: 0.875rem;
+  --background: #0a0a0a;
+  --foreground: #f5f5f5;
+  --card: #111111;
+  --card-foreground: #f5f5f5;
+  --muted: #171717;
+  --muted-foreground: #a3a3a3;
+  --border: rgba(255, 255, 255, 0.09);
+  --ring: #d4d4d8;
+  --primary: #f5f5f5;
+  --primary-foreground: #0a0a0a;
+  --secondary: #1a1a1a;
+  --secondary-foreground: #f5f5f5;
+  --accent: #1f1f1f;
+  --accent-foreground: #f5f5f5;
+  --metal: #c9ccd1;
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: #e5e5e5;
+    color: #0a0a0a;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+  section[id] {
+    scroll-margin-top: 5rem;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+  .metal-text {
+    background: linear-gradient(180deg, #ffffff 0%, #d4d6da 55%, #8d9097 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hairline-grid {
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+  .card-surface {
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01));
+    box-shadow:
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.05),
+      0 1px 2px rgba(0, 0, 0, 0.4),
+      0 12px 32px -16px rgba(0, 0, 0, 0.6);
+  }
+}
+
+/* ---------- Scroll reveal ---------- */
+.js .reveal {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition:
+    opacity 700ms var(--ease-soft),
+    transform 700ms var(--ease-soft);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Liquid metal button ---------- */
+.lm-button {
+  --lm-pad: 1.5px;
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  border-radius: 9999px;
+  padding: var(--lm-pad);
+  background: linear-gradient(135deg, #f4f4f5, #71717a 45%, #e4e4e7 70%, #52525b);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.6),
+    0 10px 30px -10px rgba(255, 255, 255, 0.18),
+    0 2px 6px rgba(0, 0, 0, 0.5);
+  transition:
+    transform 260ms var(--ease-soft),
+    box-shadow 260ms var(--ease-soft);
+  -webkit-tap-highlight-color: transparent;
+  text-decoration: none;
+}
+.lm-button:hover {
+  transform: translateY(-1px) scale(1.015);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.6),
+    0 16px 40px -12px rgba(255, 255, 255, 0.28),
+    0 2px 6px rgba(0, 0, 0, 0.5);
+}
+.lm-button:active {
+  transform: translateY(0) scale(0.97);
+  transition-duration: 90ms;
+}
+.lm-button:focus-visible {
+  outline: 2px solid #fafafa;
+  outline-offset: 4px;
+}
+.lm-button__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 500ms ease;
+}
+.lm-button__canvas.is-ready {
+  opacity: 1;
+}
+.lm-button__inner {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  width: 100%;
+  border-radius: inherit;
+  background:
+    radial-gradient(120% 140% at 50% -20%, rgba(255, 255, 255, 0.14), transparent 55%),
+    linear-gradient(180deg, #1c1c1f, #0b0b0c);
+  color: #fafafa;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
+}
+.lm-button--md .lm-button__inner {
+  height: 2.75rem;
+  padding-inline: 1.5rem;
+  font-size: 15px;
+}
+.lm-button--lg .lm-button__inner {
+  height: 3.5rem;
+  padding-inline: 2rem;
+  font-size: 1rem;
+}
+.lm-button:hover .lm-button__inner {
+  background:
+    radial-gradient(120% 140% at 50% -20%, rgba(255, 255, 255, 0.2), transparent 60%),
+    linear-gradient(180deg, #232326, #0e0e10);
+}
+.lm-button__icon {
+  transition: transform 300ms var(--ease-soft);
+}
+.lm-button:hover .lm-button__icon {
+  transform: translateX(3px);
+}
+
+/* ---------- Glass button ---------- */
+@property --glass-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: -75deg;
+}
+.glass-button-wrap {
+  --anim-time: 400ms;
+  --anim-ease: cubic-bezier(0.25, 1, 0.5, 1);
+  position: relative;
+  display: inline-flex;
+  border-radius: 9999px;
+  transition: transform var(--anim-time) var(--anim-ease);
+}
+.glass-button-wrap:has(.glass-button:active) {
+  transform: scale(0.975);
+}
+.glass-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  border-radius: 9999px;
+  color: #f5f5f5;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  cursor: pointer;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  background: linear-gradient(-75deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.03));
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.12),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.35),
+    0 6px 16px -8px rgba(0, 0, 0, 0.7);
+  transition:
+    background 400ms cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow 400ms cubic-bezier(0.25, 1, 0.5, 1);
+}
+.glass-button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  background: conic-gradient(
+    from var(--glass-angle) at 50% 50%,
+    rgba(255, 255, 255, 0.45),
+    rgba(255, 255, 255, 0.04) 5% 40%,
+    rgba(255, 255, 255, 0.45) 50%,
+    rgba(255, 255, 255, 0.04) 60% 95%,
+    rgba(255, 255, 255, 0.45)
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+  mask-clip: content-box, border-box;
+  mask-composite: exclude;
+  transition: --glass-angle 400ms cubic-bezier(0.25, 1, 0.5, 1);
+}
+.glass-button:hover {
+  background: linear-gradient(-75deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.06));
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.18),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.35),
+    0 10px 24px -10px rgba(0, 0, 0, 0.8);
+}
+.glass-button:hover::after {
+  --glass-angle: -125deg;
+}
+.glass-button:active {
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.35),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.08);
+}
+.glass-button:focus-visible {
+  outline: 2px solid #fafafa;
+  outline-offset: 4px;
+}
+.glass-button__icon {
+  transition: transform 300ms cubic-bezier(0.25, 1, 0.5, 1);
+}
+.glass-button:hover .glass-button__icon {
+  transform: translateX(3px);
+}
+
+/* ---------- FAQ ---------- */
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+.faq-item .faq-icon {
+  transition: transform 300ms var(--ease-soft);
+}
+.faq-item[open] .faq-icon {
+  transform: rotate(45deg);
+}
+
+/* ---------- Mockup bar fill ---------- */
+.bar-fill {
+  transform-origin: left center;
+  transform: scaleX(var(--fill, 1));
+  transition: transform 1100ms var(--ease-soft);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.js .reveal:not(.is-visible) .bar-fill {
+  transform: scaleX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    transition-delay: 0ms !important;
+  }
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .js .reveal:not(.is-visible) .bar-fill {
+    transform: scaleX(var(--fill, 1));
+  }
+  .lm-button:hover,
+  .lm-button:active {
+    transform: none;
+  }
+}
